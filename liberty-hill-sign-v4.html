@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<style>
+  @page {
+    size: 24in 18in;
+    margin: 0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 24in;
+    height: 18in;
+    overflow: hidden;
+    font-family: Arial Black, Arial, sans-serif;
+    background: #585dfe;
+  }
+  .sign {
+    width: 24in;
+    height: 18in;
+    background: #585dfe;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  /* LEFT — text */
+  .left {
+    flex: 1.55;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0.9in 0.8in 0.9in 1.1in;
+  }
+  .wordmark {
+    font-size: 1.1in;
+    font-weight: 900;
+    color: #bfeff2;
+    letter-spacing: -0.02in;
+    line-height: 1;
+    margin-bottom: 0.25in;
+    text-transform: lowercase;
+  }
+  .headline {
+    font-size: 2.6in;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 0.92;
+    letter-spacing: -0.06in;
+    margin-bottom: 0.35in;
+  }
+  .sub {
+    font-size: 0.65in;
+    font-weight: 700;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.25;
+  }
+  .badge {
+    display: inline-block;
+    background: #bfeff2;
+    color: #0f0f16;
+    font-size: 0.45in;
+    font-weight: 900;
+    padding: 0.14in 0.45in;
+    border-radius: 2in;
+    margin-top: 0.45in;
+    letter-spacing: 0.02in;
+    text-transform: uppercase;
+  }
+
+  /* RIGHT — QR */
+  .right {
+    flex: 1;
+    background: #f7f8fc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55in 0.5in;
+    gap: 0.35in;
+  }
+  .scan-text {
+    font-size: 0.52in;
+    font-weight: 900;
+    color: #585dfe;
+    text-align: center;
+    letter-spacing: 0.02in;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .qr-box {
+    background: #ffffff;
+    border-radius: 0.2in;
+    padding: 0.25in;
+    outline: 0.06in solid #585dfe;
+  }
+  .qr-box img {
+    width: 6.5in;
+    height: 6.5in;
+    display: block;
+  }
+  .url-text {
+    font-size: 0.22in;
+    font-weight: 700;
+    color: #999;
+    text-align: center;
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+<div class="sign">
+  <div class="left">
+    <div class="wordmark">fonio</div>
+    <div class="headline">NEVER<br>MISS A<br>CALL.</div>
+    <div class="sub">AI answers your phone 24/7.</div>
+    <div class="badge">Free demo · Liberty Hill</div>
+  </div>
+  <div class="right">
+    <div class="scan-text">Scan to get<br>your free demo</div>
+    <div class="qr-box">
+      <img src="data:image/png;base64,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" alt="QR Code"/>
+    </div>
+    <div class="url-text">fonio-local-sites.vercel.app/liberty-hill-v2.html</div>
+  </div>
+</div>
+</body>
+</html>

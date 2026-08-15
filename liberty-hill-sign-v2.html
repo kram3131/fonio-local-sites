@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 2400px;
+    height: 1800px;
+    overflow: hidden;
+    font-family: 'Roboto', Arial, sans-serif;
+    background: #f7f8fc;
+  }
+
+  .sign {
+    width: 2400px;
+    height: 1800px;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Left panel — blue */
+  .left {
+    width: 1200px;
+    height: 1800px;
+    background: #585dfe;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 110px;
+    position: relative;
+  }
+
+  /* Decorative circle */
+  .left::before {
+    content: '';
+    position: absolute;
+    width: 900px;
+    height: 900px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    bottom: -220px;
+    right: -220px;
+  }
+
+  .wordmark {
+    font-size: 110px;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: -4px;
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  .ai-label {
+    display: inline-block;
+    font-size: 32px;
+    font-weight: 700;
+    color: #0f0f16;
+    background: #bfeff2;
+    border-radius: 50px;
+    padding: 10px 32px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 80px;
+  }
+
+  .headline {
+    font-size: 118px;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.0;
+    letter-spacing: -3px;
+    margin-bottom: 50px;
+  }
+
+  .sub {
+    font-size: 44px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.82);
+    line-height: 1.4;
+    max-width: 900px;
+  }
+
+  /* Right panel — light */
+  .right {
+    width: 1200px;
+    height: 1800px;
+    background: #f7f8fc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 80px;
+    gap: 0;
+  }
+
+  .scan-label {
+    font-size: 38px;
+    font-weight: 900;
+    color: #585dfe;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+
+  .qr-wrap {
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 36px;
+    box-shadow: 0 8px 60px rgba(88,93,254,0.12);
+    margin-bottom: 60px;
+  }
+
+  .qr-wrap img {
+    width: 680px;
+    height: 680px;
+    display: block;
+  }
+
+  .cta-box {
+    background: #0f0f16;
+    border-radius: 20px;
+    padding: 40px 64px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .cta-main {
+    font-size: 46px;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+
+  .cta-sub {
+    font-size: 28px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: #0f0f16;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bottom-bar span {
+    font-size: 26px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 1px;
+  }
+
+  /* Teal accent strip on left */
+  .teal-strip {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, #585dfe 0%, #bfeff2 50%, #585dfe 100%);
+  }
+</style>
+</head>
+<body>
+<div class="sign">
+
+  <!-- LEFT: brand + headline -->
+  <div class="left">
+    <div class="wordmark">fonio</div>
+    <div class="ai-label">AI Phone Agent</div>
+    <div class="headline">Never<br>Miss<br>A Call.</div>
+    <div class="sub">Your phone answered 24/7.<br>Free demo for Liberty Hill businesses.</div>
+  </div>
+
+  <!-- RIGHT: QR + CTA -->
+  <div class="right">
+    <div class="scan-label">▼ Scan for free demo</div>
+    <div class="qr-wrap">
+      <img src="qr_liberty_hill.png" alt="QR Code"/>
+    </div>
+    <div class="cta-box">
+      <div class="cta-main">We build it free.<br>You hear it first.</div>
+      <div class="cta-sub">No commitment. Takes 2 minutes.</div>
+    </div>
+  </div>
+
+  <!-- Bottom URL bar -->
+  <div class="teal-strip"></div>
+  <div class="bottom-bar">
+    <span>fonio-local-sites.vercel.app/liberty-hill-v2.html</span>
+  </div>
+
+</div>
+</body>
+</html>
