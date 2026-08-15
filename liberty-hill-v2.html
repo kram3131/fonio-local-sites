@@ -292,7 +292,7 @@
       <h1>We'll build your<br><span class="accent">AI phone agent</span><br>for free.</h1>
 
       <p class="subtext">
-        Fill out the form. We build a custom demo agent for your business and call you so you can hear exactly what your customers will hear.
+        Fill out the form and we'll launch a live demo instantly so you can hear exactly what your customers will hear. We'll also build a custom version just for your business.
       </p>
 
       <div class="steps-strip">
@@ -302,16 +302,16 @@
         </div>
         <div class="step-item">
           <div class="step-num">2</div>
-          <div class="step-text">We build your agent</div>
+          <div class="step-text">Hear live demo now</div>
         </div>
         <div class="step-item">
           <div class="step-num">3</div>
-          <div class="step-text">We call you with it</div>
+          <div class="step-text">We build yours free</div>
         </div>
       </div>
 
       <div id="success-msg" style="display:none; text-align:center; padding:24px; background:#d1f4c7; border-radius:8px; margin-bottom:16px;">
-        <strong>You're in!</strong> We'll build your demo agent and call you within 24 hours.
+        <strong>You're in!</strong> Loading your live demo now...
       </div>
 
       <form id="lead-form">
@@ -374,6 +374,9 @@
             if (res.ok) {
               document.getElementById('lead-form').style.display = 'none';
               document.getElementById('success-msg').style.display = 'block';
+              setTimeout(() => {
+                window.location.href = 'https://app.fonio.ai/demo/setup?isTrial=true&ac=5K3KRA816N&language=en-US';
+              }, 1500);
             } else {
               btn.textContent = 'Something went wrong — try again';
               btn.disabled = false;
@@ -386,16 +389,6 @@
       </script>
 
       <p class="privacy-note">No credit card. No commitment. We build it, we call you, you decide.</p>
-
-      <div class="divider">
-        <div class="divider-line"></div>
-        <div class="divider-text">or try the live demo yourself</div>
-        <div class="divider-line"></div>
-      </div>
-
-      <a class="demo-btn" href="https://app.fonio.ai/demo/setup?isTrial=true&ac=5K3KRA816N&language=en-US" target="_blank">
-        Try a Live Demo Now →
-      </a>
 
       <p style="text-align:center; margin-top: 20px; font-size: 0.82rem; color: var(--muted);">
         Not ready yet? <a href="https://fonio.ai/en?ac=5K3KRA816N" target="_blank" style="color: var(--blue); font-weight: 600; text-decoration: none;">Explore fonio for yourself →</a>
