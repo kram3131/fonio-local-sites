@@ -310,8 +310,11 @@
         </div>
       </div>
 
-      <!-- FORM — wire action to Zapier webhook or Formspree -->
-      <form action="https://formspree.io/f/REPLACE_ME" method="POST">
+      <div id="success-msg" style="display:none; text-align:center; padding:24px; background:#d1f4c7; border-radius:8px; margin-bottom:16px;">
+        <strong>You're in!</strong> We'll build your demo agent and call you within 24 hours.
+      </div>
+
+      <form id="lead-form">
         <input type="hidden" name="town" value="Liberty Hill" />
 
         <div class="form-group">
@@ -344,8 +347,43 @@
           <input type="tel" id="phone" name="phone" placeholder="(512) 555-0100" required />
         </div>
 
-        <button class="btn" type="submit">Build My Free Demo Agent →</button>
+        <button class="btn" type="submit" id="submit-btn">Build My Free Demo Agent →</button>
       </form>
+
+      <script>
+        document.getElementById('lead-form').addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const btn = document.getElementById('submit-btn');
+          btn.textContent = 'Submitting...';
+          btn.disabled = true;
+
+          const data = {
+            name: document.getElementById('name').value,
+            business: document.getElementById('business').value,
+            type: document.getElementById('type').value,
+            phone: document.getElementById('phone').value,
+            town: 'Liberty Hill',
+          };
+
+          try {
+            const res = await fetch('/api/submit', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+            });
+            if (res.ok) {
+              document.getElementById('lead-form').style.display = 'none';
+              document.getElementById('success-msg').style.display = 'block';
+            } else {
+              btn.textContent = 'Something went wrong — try again';
+              btn.disabled = false;
+            }
+          } catch {
+            btn.textContent = 'Something went wrong — try again';
+            btn.disabled = false;
+          }
+        });
+      </script>
 
       <p class="privacy-note">No credit card. No commitment. We build it, we call you, you decide.</p>
 
