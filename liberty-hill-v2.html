@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free AI Phone Agent for Liberty Hill Businesses</title>
+  <meta name="description" content="We'll build a free AI phone agent for your Liberty Hill business. Answers calls 24/7. Try it — we call you with the demo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #585dfe;
+      --blue-light: #bcc3f6;
+      --teal: #bfeff2;
+      --green: #d1f4c7;
+      --black: #0f0f16;
+      --bg: #f7f8fc;
+      --white: #ffffff;
+      --muted: #6b7280;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg);
+      color: var(--black);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--white);
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .fonio-wordmark {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      font-size: 1.3rem;
+      color: var(--blue);
+      letter-spacing: -0.02em;
+    }
+    .nav-badge {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--muted);
+      background: #f0f0ff;
+      border: 1px solid var(--blue-light);
+      border-radius: 99px;
+      padding: 2px 10px;
+    }
+
+    /* MAIN LAYOUT */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(88, 93, 254, 0.08), 0 1px 4px rgba(0,0,0,0.06);
+      padding: 48px 40px;
+      max-width: 520px;
+      width: 100%;
+    }
+
+    /* BADGE */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--teal);
+      color: var(--black);
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 99px;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+      letter-spacing: 0.03em;
+    }
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #0d9488;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      margin-bottom: 14px;
+      color: var(--black);
+    }
+    h1 .accent { color: var(--blue); }
+
+    .subtext {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    /* HOW IT WORKS STRIP */
+    .steps-strip {
+      display: flex;
+      gap: 0;
+      margin-bottom: 32px;
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .step-item {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+    .step-item:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--blue-light);
+      font-size: 1rem;
+    }
+    .step-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 6px;
+    }
+    .step-text {
+      font-size: 0.72rem;
+      color: var(--black);
+      font-weight: 500;
+      line-height: 1.3;
+    }
+
+    /* FORM */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 6px;
+      letter-spacing: 0.01em;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.95rem;
+      color: var(--black);
+      background: var(--white);
+      transition: border-color 0.15s;
+      outline: none;
+      appearance: none;
+    }
+    input:focus, select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(88, 93, 254, 0.12);
+    }
+    input::placeholder { color: #9ca3af; }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.15s, transform 0.1s;
+      letter-spacing: 0.01em;
+    }
+    .btn:hover { background: #4347e0; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .privacy-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+
+    /* DIVIDER */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0;
+    }
+    .divider-line { flex: 1; height: 1px; background: #e5e7eb; }
+    .divider-text { font-size: 0.8rem; color: var(--muted); font-weight: 500; }
+
+    /* DEMO LINK OPTION */
+    .demo-btn {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      background: transparent;
+      color: var(--blue);
+      border: 1.5px solid var(--blue);
+      border-radius: 8px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .demo-btn:hover { background: #f0f0ff; }
+
+    /* FOOTER */
+    footer {
+      background: var(--white);
+      border-top: 1px solid #e5e7eb;
+      padding: 16px 24px;
+      text-align: center;
+    }
+    .footer-text {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .footer-text a { color: var(--blue); text-decoration: none; }
+    .powered {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .powered span { color: var(--blue); font-weight: 700; }
+
+    @media (max-width: 560px) {
+      .card { padding: 32px 24px; }
+      h1 { font-size: 1.65rem; }
+      .steps-strip { flex-direction: column; gap: 10px; }
+      .step-item:not(:last-child)::after { content: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="#">
+      <span class="fonio-wordmark">fonio</span>
+    </a>
+    <span class="nav-badge">Liberty Hill, TX</span>
+  </nav>
+
+  <main>
+    <div class="card">
+
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Free for Liberty Hill businesses
+      </div>
+
+      <h1>We'll build your<br><span class="accent">AI phone agent</span><br>for free.</h1>
+
+      <p class="subtext">
+        Fill out the form. We build a custom demo agent for your business and call you so you can hear exactly what your customers will hear.
+      </p>
+
+      <div class="steps-strip">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text">Fill out form</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text">We build your agent</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-text">We call you with it</div>
+        </div>
+      </div>
+
+      <!-- FORM — wire action to Zapier webhook or Formspree -->
+      <form action="https://formspree.io/f/REPLACE_ME" method="POST">
+        <input type="hidden" name="town" value="Liberty Hill" />
+
+        <div class="form-group">
+          <label for="name">Your name</label>
+          <input type="text" id="name" name="name" placeholder="Jane Smith" required />
+        </div>
+
+        <div class="form-group">
+          <label for="business">Business name</label>
+          <input type="text" id="business" name="business" placeholder="Smith Plumbing" required />
+        </div>
+
+        <div class="form-group">
+          <label for="type">Type of business</label>
+          <select id="type" name="type" required>
+            <option value="" disabled selected>Select your business type</option>
+            <option>Trades / Contractor</option>
+            <option>Restaurant / Cafe</option>
+            <option>Medical / Dental</option>
+            <option>Real Estate</option>
+            <option>Auto Shop</option>
+            <option>Salon / Spa</option>
+            <option>Retail</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Best phone number to call you on</label>
+          <input type="tel" id="phone" name="phone" placeholder="(512) 555-0100" required />
+        </div>
+
+        <button class="btn" type="submit">Build My Free Demo Agent →</button>
+      </form>
+
+      <p class="privacy-note">No credit card. No commitment. We build it, we call you, you decide.</p>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <div class="divider-text">or try the live demo yourself</div>
+        <div class="divider-line"></div>
+      </div>
+
+      <a class="demo-btn" href="https://app.fonio.ai/demo/setup?isTrial=true&ac=5K3KRA816N&language=en-US" target="_blank">
+        Try a Live Demo Now →
+      </a>
+
+      <p style="text-align:center; margin-top: 20px; font-size: 0.82rem; color: var(--muted);">
+        Not ready yet? <a href="https://fonio.ai/en?ac=5K3KRA816N" target="_blank" style="color: var(--blue); font-weight: 600; text-decoration: none;">Explore fonio for yourself →</a>
+      </p>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-text">Serving Liberty Hill and the surrounding area &nbsp;·&nbsp; <a href="mailto:phoneagent@laimen.ai">phoneagent@laimen.ai</a></div>
+    <div class="powered">Powered by <span>fonio</span></div>
+  </footer>
+
+</body>
+</html>
