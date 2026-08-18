@@ -3,506 +3,432 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Phone Agent for Liberty Hill Businesses — Laimen AI</title>
-  <meta name="description" content="Your phone answered 24/7. No missed calls. No lost customers. Built for Liberty Hill small businesses." />
+  <title>Free AI Phone Agent for Liberty Hill Businesses</title>
+  <meta name="description" content="We'll build a free AI phone agent for your Liberty Hill business. Answers calls 24/7. Try it — we call you with the demo." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --background: hsl(42, 44%, 92%);
-      --foreground: hsl(28, 11%, 9%);
-      --card: hsl(44, 44%, 98%);
-      --section-band: hsl(44, 42%, 96%);
-      --primary: hsl(28, 11%, 9%);
-      --primary-fg: hsl(44, 44%, 96%);
-      --orange: hsl(18, 88%, 51%);
-      --hl-1: hsl(27, 94%, 82%);
-      --hl-2: hsl(41, 92%, 79%);
-      --muted: hsl(30, 8%, 36%);
+      --blue: #585dfe;
+      --blue-light: #bcc3f6;
+      --teal: #bfeff2;
+      --green: #d1f4c7;
+      --black: #0f0f16;
+      --bg: #f7f8fc;
+      --white: #ffffff;
+      --muted: #6b7280;
     }
-
-    html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Hanken Grotesk', sans-serif;
-      background: var(--background);
-      color: var(--foreground);
-      line-height: 1.6;
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg);
+      color: var(--black);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
     }
+
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(88, 93, 254, 0.28) 0%, transparent 65%);
+      top: 40px;
+      right: -80px;
+    }
+    body::after {
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(88, 93, 254, 0.16) 0%, rgba(191, 239, 242, 0.55) 45%, transparent 70%);
+      bottom: 60px;
+      left: -80px;
+    }
+
+    nav, main, footer { position: relative; z-index: 1; }
 
     /* NAV */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 56px;
-      background: var(--primary);
+      background: var(--white);
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 24px;
       display: flex;
       align-items: center;
-      padding: 0 24px;
-      z-index: 100;
+      justify-content: space-between;
     }
     .nav-logo {
-      font-family: 'Hanken Grotesk', sans-serif;
-      font-weight: 900;
-      font-size: 1.1rem;
-      color: var(--primary-fg);
-      letter-spacing: -0.02em;
-      text-decoration: none;
-    }
-    .nav-logo span { color: var(--orange); }
-
-    .stripe-bar {
-      position: fixed;
-      top: 56px; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(90deg,
-        hsl(27,94%,82%) 0%, hsl(41,92%,79%) 20%,
-        hsl(18,88%,51%) 40%, hsl(28,11%,9%) 60%,
-        hsl(27,94%,82%) 80%, hsl(41,92%,79%) 100%);
-      z-index: 99;
-    }
-
-    /* LAYOUT */
-    main { padding-top: 60px; }
-    .container { max-width: 900px; padding: 0 24px; }
-
-    section { padding: 80px 0; }
-    section:nth-child(even) { background: var(--section-band); }
-
-    /* HERO */
-    .hero {
-      padding: 96px 0 80px;
-      background: var(--background);
-    }
-    .eyebrow {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-    h1 {
-      font-size: clamp(2.4rem, 6vw, 3.8rem);
-      font-weight: 900;
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      margin-bottom: 24px;
-      max-width: 720px;
-    }
-    .mark {
-      display: inline;
-      padding: 0 4px 2px;
-      border-radius: 3px;
-    }
-    .mark-1 { background: var(--hl-1); }
-    .mark-2 { background: var(--hl-2); }
-
-    .hero-sub {
-      font-size: 1.2rem;
-      color: var(--muted);
-      max-width: 560px;
-      margin-bottom: 36px;
-      line-height: 1.55;
-    }
-
-    .btn-primary {
-      display: inline-block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      background: var(--orange);
-      color: #fff;
-      border: 2px solid var(--foreground);
-      padding: 14px 28px;
-      text-decoration: none;
-      box-shadow: 4px 4px 0 var(--foreground);
-      transition: transform 0.1s, box-shadow 0.1s;
-      cursor: pointer;
-    }
-    .btn-primary:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0 var(--foreground);
-    }
-    .btn-primary:active {
-      transform: translate(2px, 2px);
-      box-shadow: 2px 2px 0 var(--foreground);
-    }
-
-    .btn-outline {
-      display: inline-block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      background: transparent;
-      color: var(--foreground);
-      border: 2px solid var(--foreground);
-      padding: 14px 28px;
-      text-decoration: none;
-      box-shadow: 4px 4px 0 var(--foreground);
-      transition: transform 0.1s, box-shadow 0.1s;
-      cursor: pointer;
-      margin-left: 16px;
-    }
-    .btn-outline:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0 var(--foreground);
-    }
-
-    /* STAT BAR */
-    .stat-bar {
       display: flex;
-      gap: 48px;
-      flex-wrap: wrap;
-      margin-top: 56px;
-      padding-top: 40px;
-      border-top: 2px solid var(--foreground);
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
     }
-    .stat-item {}
-    .stat-num {
-      font-size: 2.4rem;
+    .fonio-wordmark {
+      font-family: 'Roboto', sans-serif;
       font-weight: 900;
-      letter-spacing: -0.04em;
-      line-height: 1;
+      font-size: 1.3rem;
+      color: var(--blue);
+      letter-spacing: -0.02em;
     }
-    .stat-num span { color: var(--orange); }
-    .stat-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
+    .nav-badge {
+      font-size: 0.7rem;
+      font-weight: 500;
       color: var(--muted);
-      margin-top: 4px;
+      background: #f0f0ff;
+      border: 1px solid var(--blue-light);
+      border-radius: 99px;
+      padding: 2px 10px;
     }
 
-    /* SECTION TITLES */
-    h2 {
-      font-size: clamp(1.8rem, 4vw, 2.6rem);
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 12px;
-      max-width: 600px;
-    }
-    .section-intro {
-      color: var(--muted);
-      font-size: 1.05rem;
-      max-width: 540px;
-      margin-bottom: 48px;
+    /* MAIN LAYOUT */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
     }
 
-    /* SCENARIO CARDS */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-    }
     .card {
-      background: var(--card);
-      border: 2px solid var(--foreground);
-      padding: 28px;
-      box-shadow: 5px 5px 0 var(--foreground);
-    }
-    .card-icon {
-      font-size: 2rem;
-      margin-bottom: 16px;
-    }
-    .card h3 {
-      font-size: 1.1rem;
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-    .card p {
-      font-size: 0.95rem;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-    .card .outcome {
-      margin-top: 16px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--orange);
-      font-weight: 700;
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(88, 93, 254, 0.08), 0 1px 4px rgba(0,0,0,0.06);
+      padding: 48px 40px;
+      max-width: 520px;
+      width: 100%;
     }
 
-    /* HOW IT WORKS */
-    .steps {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-    .step {
-      display: flex;
-      gap: 24px;
-      padding: 28px 0;
-      border-bottom: 2px solid var(--foreground);
-    }
-    .step:first-child { border-top: 2px solid var(--foreground); }
-    .step-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.8rem;
+    /* BADGE */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--teal);
+      color: var(--black);
+      font-size: 0.75rem;
       font-weight: 700;
-      color: var(--orange);
-      min-width: 48px;
-      line-height: 1;
-      padding-top: 4px;
+      border-radius: 99px;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+      letter-spacing: 0.03em;
     }
-    .step-body h3 {
-      font-size: 1.1rem;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-    .step-body p {
-      font-size: 0.95rem;
-      color: var(--muted);
-      line-height: 1.55;
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #0d9488;
     }
 
-    /* CTA PANEL */
-    .cta-panel {
-      background: var(--primary);
-      color: var(--primary-fg);
-      padding: 80px 0;
-    }
-    .cta-panel h2 {
-      color: var(--primary-fg);
-      margin-bottom: 16px;
-      max-width: 560px;
-    }
-    .cta-panel p {
-      color: hsl(30, 8%, 70%);
-      font-size: 1.05rem;
-      max-width: 500px;
-      margin-bottom: 36px;
-      line-height: 1.55;
-    }
-    .cta-phone {
+    h1 {
       font-size: 2rem;
       font-weight: 900;
-      letter-spacing: -0.02em;
-      color: var(--orange);
-      margin-bottom: 8px;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      margin-bottom: 14px;
+      color: var(--black);
     }
-    .cta-note {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: hsl(30, 8%, 55%);
-      margin-bottom: 36px;
+    h1 .accent { color: var(--blue); }
+
+    .subtext {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 32px;
     }
+
+    /* HOW IT WORKS STRIP */
+    .steps-strip {
+      display: flex;
+      gap: 0;
+      margin-bottom: 32px;
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .step-item {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+    .step-item:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--blue-light);
+      font-size: 1rem;
+    }
+    .step-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 6px;
+    }
+    .step-text {
+      font-size: 0.72rem;
+      color: var(--black);
+      font-weight: 500;
+      line-height: 1.3;
+    }
+
+    /* FORM */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 6px;
+      letter-spacing: 0.01em;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.95rem;
+      color: var(--black);
+      background: var(--white);
+      transition: border-color 0.15s;
+      outline: none;
+      appearance: none;
+    }
+    input:focus, select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(88, 93, 254, 0.12);
+    }
+    input::placeholder { color: #9ca3af; }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.15s, transform 0.1s;
+      letter-spacing: 0.01em;
+    }
+    .btn:hover { background: #4347e0; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .privacy-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+
+    /* DIVIDER */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0;
+    }
+    .divider-line { flex: 1; height: 1px; background: #e5e7eb; }
+    .divider-text { font-size: 0.8rem; color: var(--muted); font-weight: 500; }
+
+    /* DEMO LINK OPTION */
+    .demo-btn {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      background: transparent;
+      color: var(--blue);
+      border: 1.5px solid var(--blue);
+      border-radius: 8px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .demo-btn:hover { background: #f0f0ff; }
 
     /* FOOTER */
     footer {
-      background: var(--primary);
-      color: var(--primary-fg);
-      padding: 32px 0;
-      border-top: 2px solid hsl(28,11%,15%);
+      background: var(--white);
+      border-top: 1px solid #e5e7eb;
+      padding: 16px 24px;
+      text-align: center;
     }
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
+    .footer-text {
+      font-size: 0.75rem;
+      color: var(--muted);
     }
-    .footer-brand {
-      font-weight: 900;
-      font-size: 1rem;
-      color: var(--primary-fg);
+    .footer-text a { color: var(--blue); text-decoration: none; }
+    .powered {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 4px;
     }
-    .footer-brand span { color: var(--orange); }
-    .footer-note {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: hsl(30, 8%, 50%);
-    }
+    .powered span { color: var(--blue); font-weight: 700; }
 
-    @media (max-width: 640px) {
-      .btn-outline { margin-left: 0; margin-top: 12px; display: block; width: fit-content; }
-      .stat-bar { gap: 28px; }
-      .footer-inner { flex-direction: column; align-items: flex-start; }
+    @media (max-width: 560px) {
+      .card { padding: 32px 24px; }
+      h1 { font-size: 1.65rem; }
+      .steps-strip { flex-direction: column; gap: 10px; }
+      .step-item:not(:last-child)::after { content: none; }
     }
   </style>
 </head>
 <body>
 
   <nav>
-    <a class="nav-logo" href="#">Laimen<span>AI</span></a>
+    <a class="nav-logo" href="#">
+      <span class="fonio-wordmark">fonio</span>
+    </a>
+    <span class="nav-badge">Liberty Hill, TX</span>
   </nav>
-  <div class="stripe-bar"></div>
 
   <main>
+    <div class="card">
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="container">
-        <p class="eyebrow">Liberty Hill, TX · AI Phone Agents</p>
-        <h1>Your phone answered.<br><span class="mark mark-2">Every call.</span><br>24 hours a day.</h1>
-        <p class="hero-sub">
-          Liberty Hill businesses miss calls every single day. A job, a lunch rush, a meeting — and a customer calls someone else. An AI phone agent answers instantly, every time, even at 2am.
-        </p>
-        <a class="btn-primary" href="#contact">Get a Free Demo Call</a>
-        <a class="btn-outline" href="#how">See How It Works</a>
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Free for Liberty Hill businesses
+      </div>
 
-        <div class="stat-bar">
-          <div class="stat-item">
-            <div class="stat-num"><span>10k+</span></div>
-            <div class="stat-label">Businesses using AI phones</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num"><span>24/7</span></div>
-            <div class="stat-label">Always answering</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num"><span>5 min</span></div>
-            <div class="stat-label">Setup time</div>
-          </div>
+      <h1>We'll build your<br><span class="accent">AI phone agent</span><br>for free.</h1>
+
+      <p class="subtext">
+        Fill out the form and enter your website URL. Fonio instantly builds a free AI phone demo from your site. Hear exactly what your customers will hear — no wait, no commitment.
+      </p>
+
+      <div class="steps-strip">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text">Enter your info</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text">Add your website URL</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-text">Hear your demo now</div>
         </div>
       </div>
-    </section>
 
-    <!-- SCENARIOS -->
-    <section>
-      <div class="container">
-        <p class="eyebrow">The Problem · Every Liberty Hill business knows this</p>
-        <h2>You can't answer when you're working.</h2>
-        <p class="section-intro">
-          And every missed call is a customer who called someone else. Here's what that looks like in real life.
-        </p>
-        <div class="cards">
-          <div class="card">
-            <div class="card-icon">🔧</div>
-            <h3>The Plumber on a Job</h3>
-            <p>You're under a sink at 10am. A new customer calls for a quote. It rings, goes to voicemail. They hang up and call your competitor.</p>
-            <div class="outcome">Your AI answers — takes their name, job details, and schedules a callback.</div>
-          </div>
-          <div class="card">
-            <div class="card-icon">🍽️</div>
-            <h3>The Restaurant at Lunch Rush</h3>
-            <p>Every person on your staff is slammed from 11am to 1pm. The phone rings eight times. Nobody picks up. Reservations go to the place down the street.</p>
-            <div class="outcome">Your AI handles reservations and FAQs all day — zero staff time.</div>
-          </div>
-          <div class="card">
-            <div class="card-icon">❄️</div>
-            <h3>The HVAC Guy After Hours</h3>
-            <p>It's 7pm in August. Someone's AC breaks. They call you first. Nobody answers. You get a voicemail at 9pm — but they already booked the other guy.</p>
-            <div class="outcome">Your AI answers at 7pm, books the appointment, and you wake up to a scheduled job.</div>
-          </div>
+      <div id="success-msg" style="display:none; text-align:center; padding:24px; background:#d1f4c7; border-radius:8px; margin-bottom:16px;">
+        <strong>You're in!</strong> Loading your live demo now...
+      </div>
+
+      <form id="lead-form">
+        <input type="hidden" name="town" value="Liberty Hill" />
+
+        <div class="form-group">
+          <label for="name">Your name</label>
+          <input type="text" id="name" name="name" placeholder="Jane Smith" required />
         </div>
-      </div>
-    </section>
 
-    <!-- HOW IT WORKS -->
-    <section id="how">
-      <div class="container">
-        <p class="eyebrow">How It Works · Simple</p>
-        <h2>Up and running in one afternoon.</h2>
-        <p class="section-intro">No IT department. No technical knowledge. We handle setup.</p>
-        <div class="steps">
-          <div class="step">
-            <div class="step-num">01</div>
-            <div class="step-body">
-              <h3>We learn your business</h3>
-              <p>We ask you a few questions — your hours, what you do, what customers typically call about. That becomes your AI's brain.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">02</div>
-            <div class="step-body">
-              <h3>Your AI gets a voice</h3>
-              <p>It sounds natural, not robotic. It knows your business name, your services, your hours. Customers often don't realize they're talking to AI.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">03</div>
-            <div class="step-body">
-              <h3>Calls start getting answered</h3>
-              <p>Forward your existing number (or get a new local Liberty Hill number). Your AI picks up instantly. You get a summary of every call.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">04</div>
-            <div class="step-body">
-              <h3>You focus on the work</h3>
-              <p>Appointments get booked. Questions get answered. Leads get captured. You stop worrying about the phone.</p>
-            </div>
-          </div>
+        <div class="form-group">
+          <label for="business">Business name</label>
+          <input type="text" id="business" name="business" placeholder="Smith Plumbing" required />
         </div>
-      </div>
-    </section>
 
-    <!-- WHO IT'S FOR -->
-    <section>
-      <div class="container">
-        <p class="eyebrow">Who We Build For</p>
-        <h2>Any Liberty Hill business that takes calls.</h2>
-        <p class="section-intro">If your phone rings and you can't always answer it, this is for you.</p>
-        <div class="cards">
-          <div class="card">
-            <h3>Trades & Contractors</h3>
-            <p>Plumbers, electricians, HVAC, roofers, landscapers. You're always on a job — you can't be on the phone too.</p>
-          </div>
-          <div class="card">
-            <h3>Restaurants & Cafes</h3>
-            <p>Reservations, hours, menu questions, catering inquiries. Handle all of it without pulling staff off the floor.</p>
-          </div>
-          <div class="card">
-            <h3>Medical & Dental</h3>
-            <p>Appointment booking, insurance questions, after-hours triage. HIPAA-aware, professional, always available.</p>
-          </div>
-          <div class="card">
-            <h3>Real Estate & Property</h3>
-            <p>Showing requests, listing questions, rental inquiries. Capture every lead the moment they call.</p>
-          </div>
-          <div class="card">
-            <h3>Auto Shops</h3>
-            <p>Service appointments, estimates, parts availability. Stop putting callers on hold while you're under a car.</p>
-          </div>
-          <div class="card">
-            <h3>Any Small Business</h3>
-            <p>If you have a phone number and customers who call it, an AI phone agent will pay for itself fast.</p>
-          </div>
+        <div class="form-group">
+          <label for="type">Type of business</label>
+          <select id="type" name="type" required>
+            <option value="" disabled selected>Select your business type</option>
+            <option>Trades / Contractor</option>
+            <option>Restaurant / Cafe</option>
+            <option>Medical / Dental</option>
+            <option>Real Estate</option>
+            <option>Auto Shop</option>
+            <option>Salon / Spa</option>
+            <option>Retail</option>
+            <option>Other</option>
+          </select>
         </div>
-      </div>
-    </section>
 
-    <!-- CTA -->
-    <section class="cta-panel" id="contact">
-      <div class="container">
-        <p class="eyebrow" style="color: hsl(30,8%,55%);">Liberty Hill · Free Demo</p>
-        <h2>Call and hear it for yourself.</h2>
-        <p>We set up a live demo agent for Liberty Hill businesses. Call the number below and experience exactly what your customers would hear.</p>
-        <div class="cta-phone"><!-- REPLACE: Fonio demo number --></div>
-        <div class="cta-note">Free demo call · No commitment · Takes 2 minutes</div>
-        <a class="btn-primary" href="mailto:mark@laimen.ai?subject=Liberty Hill AI Phone Agent&body=Hi, I'd like to learn more about an AI phone agent for my business in Liberty Hill.">
-          Or Email Us Directly
-        </a>
-      </div>
-    </section>
+        <div class="form-group">
+          <label for="phone">Best phone number to call you on</label>
+          <input type="tel" id="phone" name="phone" placeholder="(512) 555-0100" required />
+        </div>
 
+        <button class="btn" type="submit" id="submit-btn">Build My Free Demo Agent →</button>
+      </form>
+
+      <script>
+        document.getElementById('lead-form').addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const btn = document.getElementById('submit-btn');
+          btn.textContent = 'Submitting...';
+          btn.disabled = true;
+
+          const data = {
+            name: document.getElementById('name').value,
+            business: document.getElementById('business').value,
+            type: document.getElementById('type').value,
+            phone: document.getElementById('phone').value,
+            town: 'Liberty Hill',
+          };
+
+          try {
+            const res = await fetch('/api/submit', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+            });
+            if (res.ok) {
+              document.getElementById('lead-form').style.display = 'none';
+              document.getElementById('success-msg').style.display = 'block';
+              setTimeout(() => {
+                window.location.href = 'https://app.fonio.ai/demo/setup?isTrial=true&ac=5K3KRA816N&language=en-US';
+              }, 1500);
+            } else {
+              btn.textContent = 'Something went wrong — try again';
+              btn.disabled = false;
+            }
+          } catch {
+            btn.textContent = 'Something went wrong — try again';
+            btn.disabled = false;
+          }
+        });
+      </script>
+
+      <p class="privacy-note">No credit card. No commitment. You decide.</p>
+      <p style="text-align:center; font-size:0.75rem; color:var(--muted); margin-top:8px;">Your free demo is built from your website. Full features unlock when you become a customer.</p>
+
+      <p style="text-align:center; margin-top: 20px; font-size: 0.82rem; color: var(--muted);">
+        Not ready yet? <a href="https://fonio.ai/en?ac=5K3KRA816N" target="_blank" style="color: var(--blue); font-weight: 600; text-decoration: none;">Explore fonio for yourself →</a>
+      </p>
+
+    </div>
   </main>
 
-  <div class="stripe-bar" style="position: static; height: 4px;"></div>
   <footer>
-    <div class="container">
-      <div class="footer-inner">
-        <div class="footer-brand">Laimen<span>AI</span> — Austin, TX</div>
-        <div class="footer-note">Serving Liberty Hill and surrounding communities</div>
-      </div>
-    </div>
+    <div class="footer-text">Serving Liberty Hill and the surrounding area &nbsp;·&nbsp; <a href="mailto:phoneagent@laimen.ai">phoneagent@laimen.ai</a></div>
+    <div class="powered">Powered by <span>fonio</span></div>
   </footer>
 
 </body>
