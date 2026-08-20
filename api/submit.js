@@ -55,7 +55,7 @@ export default async function handler(req, res) {
       const createRes = await fetch(`${FONIO_BASE}/agent-demo`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: website, language: 'en', affiliateCode: FONIO_AC }),
+        body: JSON.stringify({ url: website, language: 'en-US', affiliateCode: FONIO_AC }),
       });
       if (createRes.ok) {
         const { id } = await createRes.json();
