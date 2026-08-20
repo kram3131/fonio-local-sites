@@ -373,7 +373,7 @@
 
         <div class="form-group">
           <label for="website">Your business website</label>
-          <input type="url" id="website" name="website" placeholder="https://smithplumbing.com" required />
+          <input type="text" id="website" name="website" placeholder="smithplumbing.com" required />
         </div>
 
         <div class="form-group">
@@ -391,11 +391,14 @@
           btn.textContent = 'Submitting...';
           btn.disabled = true;
 
+          let website = document.getElementById('website').value.trim();
+          if (website && !website.match(/^https?:\/\//)) website = 'https://' + website;
+
           const data = {
             name: document.getElementById('name').value,
             business: document.getElementById('business').value,
             type: document.getElementById('type').value,
-            website: document.getElementById('website').value,
+            website,
             phone: document.getElementById('phone').value,
             town: 'Liberty Hill',
           };
