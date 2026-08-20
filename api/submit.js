@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, business, type, phone, town } = req.body;
+  const { name, business, type, phone, website, town } = req.body;
 
   if (!name || !phone) {
     return res.status(400).json({ error: 'Name and phone are required' });
@@ -27,6 +27,7 @@ export default async function handler(req, res) {
         customFields: [
           { key: 'business_type', field_value: type || '' },
           { key: 'lead_source', field_value: `Fonio Local Site - ${town || ''}` },
+          { key: 'website', field_value: website || '' },
         ],
       }),
     });
@@ -35,6 +36,21 @@ export default async function handler(req, res) {
       const err = await ghlRes.text();
       console.error('GHL error:', err);
       return res.status(500).json({ error: 'Failed to create contact' });
+    }
+
+    // Trigger fonio demo call directly -- no redirect needed
+    try {
+      await fetch('https://app.fonio.ai/api/landing-page-agent/call?ac=5K3KRA816N', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Origin': 'https://app.fonio.ai',
+          'Referer': 'https://app.fonio.ai/demo/setup?isTrial=true&ac=5K3KRA816N',
+        },
+        body: JSON.stringify({ toNumber: phone, locale: 'en-US' }),
+      });
+    } catch (fonioErr) {
+      console.error('Fonio call error (non-fatal):', fonioErr);
     }
 
     return res.status(200).json({ success: true });

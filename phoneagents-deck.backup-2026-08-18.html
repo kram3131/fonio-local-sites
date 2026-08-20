@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>@phoneagents Growth Plan — fonio.ai Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #585dfe;
+    --blue-dark: #4347e0;
+    --blue-light: #bcc3f6;
+    --blue-pale: #eef0ff;
+    --teal: #bfeff2;
+    --teal-dark: #0d9488;
+    --black: #0f0f16;
+    --gray: #6b7280;
+    --light: #f7f8fc;
+    --white: #ffffff;
+    --green: #d1f4c7;
+    --border: #e5e7eb;
+  }
+
+  html, body { height: 100%; font-family: 'Roboto', sans-serif; background: #1a1a2e; color: var(--black); overflow: hidden; }
+
+  .deck { width: 100vw; height: 100vh; display: flex; flex-direction: column; position: relative; }
+
+  .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--blue); transition: width 0.35s ease; z-index: 100; }
+
+  .slide-counter { position: fixed; bottom: 20px; right: 24px; font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.4); letter-spacing: 0.08em; z-index: 100; }
+
+  .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); z-index: 100; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: rgba(255,255,255,0.55); font-size: 1.1rem; transition: all 0.15s; backdrop-filter: blur(8px); }
+  .nav-arrow:hover { background: rgba(255,255,255,0.16); color: #fff; }
+  .nav-arrow.prev { left: 16px; }
+  .nav-arrow.next { right: 16px; }
+
+  .slides-viewport { flex: 1; position: relative; overflow: hidden; }
+
+  .slide { position: absolute; inset: 0; display: flex; align-items: stretch; opacity: 0; transform: translateX(60px); transition: opacity 0.35s ease, transform 0.35s ease; pointer-events: none; }
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: all; }
+  .slide.exit { opacity: 0; transform: translateX(-60px); }
+
+  /* LAYOUT */
+  .slide-inner { flex: 1; display: flex; flex-direction: column; padding: 48px 64px; background: var(--white); position: relative; overflow: hidden; }
+  .slide-inner.dark { background: var(--black); color: var(--white); }
+  .slide-inner.blue { background: var(--blue); color: var(--white); }
+  .slide-inner.light { background: var(--light); }
+  .slide-inner.compact { padding: 36px 56px; }
+
+  /* TYPOGRAPHY */
+  .slide-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; background: var(--teal); color: var(--black); padding: 4px 14px; border-radius: 99px; margin-bottom: 18px; width: fit-content; }
+
+  h1.hero { font-size: 3.6rem; font-weight: 900; line-height: 1.05; letter-spacing: -0.035em; }
+  h1.hero .accent { color: var(--teal); }
+
+  h2.slide-title { font-size: 2.2rem; font-weight: 900; line-height: 1.1; letter-spacing: -0.025em; margin-bottom: 10px; }
+  h2.slide-title .accent { color: var(--blue); }
+  .dark h2.slide-title .accent, .blue h2.slide-title .accent { color: var(--teal); }
+
+  .slide-sub { font-size: 0.98rem; line-height: 1.65; color: var(--gray); max-width: 680px; }
+  .dark .slide-sub, .blue .slide-sub { color: rgba(255,255,255,0.68); }
+
+  /* STAT GRID */
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 28px; }
+  .stat-card { background: var(--light); border-radius: 12px; padding: 20px 18px; border: 1px solid var(--border); }
+  .dark .stat-card { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
+  .blue .stat-card { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); }
+  .stat-number { font-size: 1.9rem; font-weight: 900; color: var(--blue); letter-spacing: -0.03em; line-height: 1; margin-bottom: 5px; }
+  .blue .stat-number, .dark .stat-number { color: var(--teal); }
+  .stat-label { font-size: 0.75rem; font-weight: 500; color: var(--gray); line-height: 1.4; }
+  .dark .stat-label, .blue .stat-label { color: rgba(255,255,255,0.55); }
+
+  /* COLUMNS */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 28px; align-items: start; }
+  .two-col-wide { display: grid; grid-template-columns: 1.25fr 1fr; gap: 36px; margin-top: 24px; align-items: center; }
+
+  /* CARDS */
+  .card { background: var(--white); border-radius: 12px; padding: 20px 22px; border: 1px solid var(--border); box-shadow: 0 2px 10px rgba(88,93,254,0.05); }
+  .light .card { background: var(--white); }
+  .dark .card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); box-shadow: none; }
+  .blue .card { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.18); box-shadow: none; }
+  .card-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+  .dark .card-label, .blue .card-label { color: var(--teal); }
+  .card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+  .dark .card h3, .blue .card h3 { color: var(--white); }
+  .card p { font-size: 0.83rem; line-height: 1.55; color: var(--gray); }
+  .dark .card p, .blue .card p { color: rgba(255,255,255,0.6); }
+
+  /* CHECK LIST */
+  .check-list { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .check-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.88rem; line-height: 1.5; }
+  .check-list li::before { content: ''; width: 18px; height: 18px; min-width: 18px; border-radius: 50%; background: var(--blue); margin-top: 2px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 5l2.5 2.5 4-4' stroke='white' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; }
+  .dark .check-list li::before { background-color: var(--teal); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 5l2.5 2.5 4-4' stroke='%230f0f16' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+
+  /* MATH BOX */
+  .math-box { background: var(--blue-pale); border-radius: 12px; padding: 24px 28px; border: 1px solid var(--blue-light); margin-top: 28px; }
+  .math-row { display: flex; align-items: center; gap: 14px; font-size: 1rem; font-weight: 500; flex-wrap: wrap; }
+  .math-val { font-weight: 900; font-size: 1.25rem; color: var(--blue); }
+  .math-op { color: var(--gray); font-size: 1.3rem; font-weight: 300; }
+  .math-result { margin-top: 16px; font-size: 1.5rem; font-weight: 900; color: var(--blue); letter-spacing: -0.02em; }
+  .math-label { font-size: 0.78rem; color: var(--gray); margin-top: 4px; }
+
+  /* HIGHLIGHT */
+  .highlight-box { background: var(--blue-pale); border: 1px solid var(--blue-light); border-radius: 10px; padding: 16px 20px; margin-top: 20px; }
+  .highlight-box .label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); margin-bottom: 5px; }
+  .highlight-box .value { font-size: 1rem; font-weight: 700; color: var(--black); line-height: 1.4; }
+  .dark .highlight-box { background: rgba(88,93,254,0.15); border-color: rgba(88,93,254,0.3); }
+  .dark .highlight-box .label { color: var(--teal); }
+  .dark .highlight-box .value { color: var(--white); }
+
+  /* TIMELINE */
+  .timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 28px; }
+  .timeline-item { position: relative; }
+  .timeline-item::before { content: ''; position: absolute; top: 18px; left: calc(50% + 18px); right: calc(-50% + 18px); height: 2px; background: var(--blue-light); }
+  .timeline-item:last-child::before { display: none; }
+  .timeline-num { width: 36px; height: 36px; border-radius: 50%; background: var(--blue); color: white; font-weight: 900; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; position: relative; z-index: 1; }
+  .timeline-month { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+  .timeline-tasks { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .timeline-tasks li { font-size: 0.78rem; color: var(--gray); padding-left: 8px; border-left: 2px solid var(--blue-light); line-height: 1.4; }
+
+  /* PILLARS GRID */
+  .pillars-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 24px; }
+  .pillar-card { background: var(--light); border-radius: 10px; padding: 16px 14px; border: 1px solid var(--border); }
+  .pillar-num { font-size: 0.65rem; font-weight: 900; letter-spacing: 0.1em; color: var(--blue); margin-bottom: 6px; }
+  .pillar-title { font-size: 0.82rem; font-weight: 700; margin-bottom: 5px; line-height: 1.25; }
+  .pillar-ex { font-size: 0.72rem; color: var(--gray); line-height: 1.45; }
+
+  /* WEEK PLAN */
+  .week-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 22px; }
+  .week-item { background: var(--light); border-radius: 10px; padding: 14px 16px; border: 1px solid var(--border); border-left: 3px solid var(--blue); }
+  .dark .week-item { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); border-left-color: var(--teal); }
+  .week-day { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); margin-bottom: 4px; }
+  .dark .week-day { color: var(--teal); }
+  .week-title { font-size: 0.85rem; font-weight: 700; line-height: 1.3; }
+  .dark .week-title { color: var(--white); }
+  .week-desc { font-size: 0.75rem; color: var(--gray); margin-top: 3px; line-height: 1.4; }
+  .dark .week-desc { color: rgba(255,255,255,0.5); }
+
+  /* MAGIC MOMENT */
+  .moment-box { background: var(--black); border-radius: 16px; padding: 28px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; gap: 12px; position: relative; overflow: hidden; }
+  .moment-box::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(88,93,254,0.4) 0%, transparent 70%); pointer-events: none; }
+  .moment-phone { font-size: 2.5rem; position: relative; z-index: 1; }
+  .moment-headline { font-size: 1.1rem; font-weight: 900; position: relative; z-index: 1; line-height: 1.3; }
+  .moment-sub { font-size: 0.78rem; color: rgba(255,255,255,0.6); position: relative; z-index: 1; line-height: 1.5; }
+  .moment-cta { background: var(--blue); border-radius: 8px; padding: 8px 20px; font-size: 0.8rem; font-weight: 700; color: white; position: relative; z-index: 1; }
+
+  /* SIGN VISUAL */
+  .sign-visual { background: var(--blue); border-radius: 14px; padding: 28px 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; gap: 10px; }
+  .sign-wm { font-weight: 900; font-size: 1.5rem; letter-spacing: -0.03em; }
+  .sign-headline { font-weight: 900; font-size: 1.3rem; line-height: 1.2; }
+  .sign-sub { font-size: 0.72rem; opacity: 0.7; }
+
+  /* TOWN TAGS */
+  .town-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .town-tag { background: var(--white); border: 1.5px solid var(--blue-light); border-radius: 8px; padding: 7px 14px; font-size: 0.82rem; font-weight: 600; color: var(--blue); display: flex; align-items: center; gap: 5px; }
+  .town-tag.active { background: var(--blue); color: white; border-color: var(--blue); }
+
+  /* CADENCE GRID */
+  .cadence-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 24px; }
+  .cadence-day { background: var(--light); border-radius: 10px; padding: 14px 12px; border: 1px solid var(--border); text-align: center; }
+  .cadence-day.highlight { background: var(--blue); border-color: var(--blue); color: white; }
+  .cadence-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray); margin-bottom: 8px; }
+  .cadence-day.highlight .cadence-label { color: rgba(255,255,255,0.65); }
+  .cadence-type { font-size: 0.78rem; font-weight: 700; line-height: 1.35; }
+  .cadence-day.highlight .cadence-type { color: white; }
+
+  /* COMMISSION */
+  .commission-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .commission-row:last-child { border-bottom: none; }
+  .commission-label { font-size: 0.88rem; color: rgba(255,255,255,0.6); }
+  .commission-value { font-size: 1.05rem; font-weight: 700; color: white; }
+  .commission-value.accent { color: var(--teal); }
+
+  /* FONIO WORDMARK */
+  .fonio-wm { font-family: 'Roboto', sans-serif; font-weight: 900; font-size: 1.3rem; color: var(--blue); letter-spacing: -0.03em; }
+  .dark .fonio-wm, .blue .fonio-wm { color: var(--white); }
+
+  /* FOOTER */
+  .slide-footer { margin-top: auto; padding-top: 20px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); }
+  .dark .slide-footer { border-top-color: rgba(255,255,255,0.1); }
+  .blue .slide-footer { border-top-color: rgba(255,255,255,0.18); }
+  .footer-brand { font-size: 0.68rem; font-weight: 500; color: var(--gray); }
+  .dark .footer-brand, .blue .footer-brand { color: rgba(255,255,255,0.35); }
+
+  /* PILL */
+  .pill { display: inline-flex; align-items: center; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 99px; padding: 3px 10px; }
+  .pill.blue-pill { background: var(--blue-pale); color: var(--blue); border: 1px solid var(--blue-light); }
+  .pill.teal-pill { background: var(--teal); color: var(--teal-dark); }
+
+  /* ORB */
+  .orb { position: absolute; border-radius: 50%; filter: blur(70px); pointer-events: none; }
+
+  /* COVER */
+  .cover-content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .cover-handle { font-size: 1rem; font-weight: 700; color: rgba(255,255,255,0.5); letter-spacing: 0.02em; margin-bottom: 20px; }
+  .cover-prepared { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.12); font-size: 0.78rem; color: rgba(255,255,255,0.4); }
+  .partner-badge { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: var(--teal); color: var(--black); padding: 4px 12px; border-radius: 99px; }
+</style>
+</head>
+<body>
+
+<div class="deck">
+  <div class="progress-bar" id="progress"></div>
+  <button class="nav-arrow prev" id="prev">&#8592;</button>
+  <button class="nav-arrow next" id="next">&#8594;</button>
+  <div class="slide-counter" id="counter">1 / 19</div>
+
+  <div class="slides-viewport" id="viewport">
+
+    <!-- 1. COVER -->
+    <div class="slide active">
+      <div class="slide-inner dark" style="justify-content:space-between;">
+        <div class="orb" style="width:600px;height:600px;background:radial-gradient(circle,rgba(88,93,254,0.3) 0%,transparent 70%);top:-200px;right:-150px;"></div>
+        <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(191,239,242,0.2) 0%,transparent 70%);bottom:-100px;left:-100px;"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="fonio-wm">fonio</span>
+          <span class="partner-badge">Referral Partner</span>
+        </div>
+        <div class="cover-content">
+          <div class="cover-handle">@phoneagents</div>
+          <h1 class="hero">Building the<br><span class="accent">Lead Engine</span><br>for fonio.ai US.</h1>
+          <p class="slide-sub" style="margin-top:18px;">Instagram growth strategy and physical signage program. Two channels. One magic moment. All referral-tagged.</p>
+        </div>
+        <div class="cover-prepared">Prepared by Mark Garza, Laimen AI &nbsp;·&nbsp; fonio.ai Referral Partner</div>
+      </div>
+    </div>
+
+    <!-- 2. OPPORTUNITY -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(88,93,254,0.06) 0%,transparent 70%);top:-150px;right:-100px;"></div>
+        <div class="slide-eyebrow">The Opportunity</div>
+        <h2 class="slide-title">fonio.ai is expanding<br>to the US. <span class="accent">We're the local arm.</span></h2>
+        <p class="slide-sub">fonio is a Vienna-based AI phone agent company, DACH market leader, now entering the US with a partner channel. Direct relationships with the sales team and head of partnerships. Goal: become fonio's most valuable US partner.</p>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-label">The Product</div>
+            <h3>AI Phone Agent</h3>
+            <p>Answers every inbound call 24/7. Books appointments, handles questions, never routes to voicemail. No-code setup under 10 minutes. Proprietary full stack with natural turn detection.</p>
+          </div>
+          <div class="card">
+            <div class="card-label">The Role</div>
+            <h3>Referral Partner — 35%</h3>
+            <p>35% recurring revenue share on every customer referred. Direct access to Max, Johan (sales), and David (head of partnerships). Building toward reseller tier.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm" style="font-size:1rem;">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. WHY FONIO -->
+    <div class="slide">
+      <div class="slide-inner dark">
+        <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(88,93,254,0.35) 0%,transparent 65%);top:-150px;right:-100px;"></div>
+        <div class="slide-eyebrow" style="background:rgba(191,239,242,0.2);color:var(--teal);">Why fonio</div>
+        <h2 class="slide-title">The numbers that make<br><span class="accent">this a no-brainer bet.</span></h2>
+        <div class="stat-grid" style="margin-top:24px;">
+          <div class="stat-card"><div class="stat-number">$17M</div><div class="stat-label">Seed round led by 20VC at $140M valuation (June 2026)</div></div>
+          <div class="stat-card"><div class="stat-number">10K+</div><div class="stat-label">Business customers including Volkswagen, Brita, and Storebox</div></div>
+          <div class="stat-card"><div class="stat-number">2M+</div><div class="stat-label">Calls automated per month across the platform</div></div>
+          <div class="stat-card"><div class="stat-number">$10M</div><div class="stat-label">ARR reached in roughly 12 months from launch</div></div>
+          <div class="stat-card"><div class="stat-number">30%+</div><div class="stat-label">Monthly growth rate, expanding US from DACH + France + Italy</div></div>
+          <div class="stat-card"><div class="stat-number">90%</div><div class="stat-label">Calls resolved end-to-end without any human handoff</div></div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. THE PROBLEM -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-eyebrow">The Problem</div>
+        <h2 class="slide-title">Missed calls aren't<br>an inconvenience.<br><span class="accent">They're revenue bleeding out.</span></h2>
+        <div class="two-col">
+          <div>
+            <ul class="check-list">
+              <li>Small businesses miss a large share of inbound calls weekly, especially during jobs and after hours</li>
+              <li>Most callers who hit voicemail never call back. They move to the next Google result</li>
+              <li>After-hours calls are the highest-intent leads: people calling at 9pm want to book, not browse</li>
+              <li>Every missed call is revenue handed to a competitor who simply picked up</li>
+            </ul>
+            <div class="highlight-box">
+              <div class="label">The emotional spine</div>
+              <div class="value">This framing (missed calls = missed money) is the core message behind every piece of content and every yard sign.</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="card" style="border-left:4px solid var(--blue);">
+              <div class="card-label">Missed call rate</div>
+              <div class="stat-number" style="font-size:2.4rem;">~40%</div>
+              <p style="margin-top:5px;">of small business inbound calls go unanswered during peak hours and after close</p>
+            </div>
+            <div class="card" style="border-left:4px solid #ef4444;">
+              <div class="card-label">Callback rate</div>
+              <div class="stat-number" style="font-size:2.4rem;color:#ef4444;">~20%</div>
+              <p style="margin-top:5px;">of callers who reach voicemail ever call back. The other 80% are gone.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm" style="font-size:1rem;">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. THE MATH -->
+    <div class="slide">
+      <div class="slide-inner light">
+        <div class="slide-eyebrow">The Math</div>
+        <h2 class="slide-title">Put a dollar figure<br><span class="accent">on the pain.</span></h2>
+        <p class="slide-sub">Walk any small business owner through this. They feel it immediately. This is the sales conversation and the content hook.</p>
+        <div class="math-box">
+          <div class="math-row">
+            <span>Average job value</span><span class="math-val">$400</span>
+            <span class="math-op">x</span>
+            <span>Missed calls / week</span><span class="math-val">5</span>
+            <span class="math-op">x</span>
+            <span>52 weeks</span>
+          </div>
+          <div class="math-result">= $104,000 / year</div>
+          <div class="math-label">in revenue handed to competitors. Every single year.</div>
+        </div>
+        <div class="two-col" style="margin-top:20px;">
+          <div class="card"><div class="card-label">Plumber ($350 avg)</div><h3>$91K/yr walking out</h3><p>5 missed calls a week, 52 weeks. That's the math. One booked job pays for the AI agent.</p></div>
+          <div class="card"><div class="card-label">HVAC ($700 avg)</div><h3>$182K/yr walking out</h3><p>Texas summer. Phone rings while you're under a crawlspace. You don't answer. That caller books someone else.</p></div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm" style="font-size:1rem;">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. THE MAGIC MOMENT -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-eyebrow">The Magic Moment</div>
+        <h2 class="slide-title">Your website.<br>Your number.<br><span class="accent">Your phone rings.</span></h2>
+        <div class="two-col-wide">
+          <div>
+            <p class="slide-sub" style="margin-bottom:18px;">A visitor enters their business website URL and phone number. Within about 60 seconds, an AI agent calls them, already knowing their business, services, and hours. They hear themselves. That's the moment.</p>
+            <ul class="check-list" style="margin-top:0;">
+              <li>Converts every piece of content from a pitch into an experience</li>
+              <li>People screen-record it and share it without being asked</li>
+              <li>Referral tag on the demo URL makes attribution automatic on every conversion</li>
+              <li>This is the single CTA across all Instagram content and all yard signage</li>
+            </ul>
+            <div class="highlight-box">
+              <div class="label">Why this works</div>
+              <div class="value">The demo isn't generic. It reads their actual website and sounds like their business. That's the "wait, that's me" moment that drives the sale.</div>
+            </div>
+          </div>
+          <div class="moment-box">
+            <div class="moment-phone">📱</div>
+            <div class="moment-headline">Your phone just rang.</div>
+            <div class="moment-sub">An AI agent that already knows your business, your hours, your services. Built from your website URL in 60 seconds.</div>
+            <div class="moment-cta">Try it free at fonio.ai</div>
+            <div style="font-size:0.7rem;color:rgba(255,255,255,0.35);margin-top:4px;position:relative;z-index:1;">Referral-tagged. No credit card.</div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm" style="font-size:1rem;">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. TWO CHANNELS -->
+    <div class="slide">
+      <div class="slide-inner light">
+        <div class="slide-eyebrow">The Growth Plan</div>
+        <h2 class="slide-title">Two channels.<br><span class="accent">Same magic moment.</span></h2>
+        <p class="slide-sub" style="margin-bottom:20px;">Instagram puts the demo in front of business owners at scale. Yard signs put it in front of the owner who would never find us online. Both surfaces point to the same referral-tagged experience.</p>
+        <div class="two-col" style="margin-top:0;">
+          <div class="card" style="border-top:3px solid var(--blue);">
+            <div class="card-label" style="margin-bottom:10px;">Digital</div>
+            <h3 style="font-size:1.15rem;margin-bottom:6px;">@phoneagents on Instagram</h3>
+            <p>Niche account built around one repeatable hook: watching an AI answer a real small business call. DM-share engineered. Comment "DEMO" and the AI calls your phone. National reach, small business owner audience.</p>
+          </div>
+          <div class="card" style="border-top:3px solid var(--teal-dark);">
+            <div class="card-label" style="margin-bottom:10px;color:var(--teal-dark);">Physical</div>
+            <h3 style="font-size:1.15rem;margin-bottom:6px;">Yard Signs + NFC + QR</h3>
+            <p>Branded signs in hyperlocal Austin metro markets. Tap the NFC chip, scan the QR, or call the printed number. An AI agent answers immediately. Flagship expression: real estate signs where the house talks to buyers. Per-town lead tracking in GHL.</p>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top:20px;">
+          <div class="label">The tie</div>
+          <div class="value">Instagram is the digital demo. Yard signs are the physical demo. Both are the same 60-second magic moment. Both are referral-tagged to fonio.</div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm" style="font-size:1rem;">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. SEVEN PILLARS -->
+    <div class="slide">
+      <div class="slide-inner compact">
+        <div class="slide-eyebrow">Content System</div>
+        <h2 class="slide-title">7 pillars. 43 ideas.<br><span class="accent">One account.</span></h2>
+        <div class="pillars-grid">
+          <div class="pillar-card">
+            <div class="pillar-num">PILLAR 1</div>
+            <div class="pillar-title">Live Call Demos</div>
+            <div class="pillar-ex">Unscripted calls on camera, blind human vs AI tests, interruption stress tests, angry-customer de-escalation, 3am call demos</div>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-num">PILLAR 2</div>
+            <div class="pillar-title">Missed Call Math</div>
+            <div class="pillar-ex">Revenue-loss breakdowns, receptionist vs AI cost comparisons, breakeven framing (one job pays for the agent)</div>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-num">PILLAR 3</div>
+            <div class="pillar-title">Vertical Spotlights</div>
+            <div class="pillar-ex">Plumber, salon, restaurant, photographer, dental, HVAC in a Texas summer, property management. Niche beats generic.</div>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-num">PILLAR 4</div>
+            <div class="pillar-title">Education / Authority</div>
+            <div class="pillar-ex">How the tech works, buyer's guides, sub-10-minute setup speed runs, objection handling (what happens when AI is stumped)</div>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-num">PILLAR 5</div>
+            <div class="pillar-title">Social Proof / Story</div>
+            <div class="pillar-ex">Why fonio over the US players, traction numbers, client reaction videos, anonymized call transcripts, week-one report cards</div>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-num">PILLAR 6</div>
+            <div class="pillar-title">Entertainment</div>
+            <div class="pillar-ex">POV skits of owners mid-job with ringing phones, nostalgia bits (hold music, phone trees) vs natural AI conversation</div>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-num">PILLAR 7</div>
+            <div class="pillar-title">Engagement / Community</div>
+            <div class="pillar-ex">Comment DEMO and AI calls your phone, weekly polls, build-in-public series, audience voicemail challenges</div>
+          </div>
+          <div class="pillar-card" style="background:var(--blue-pale);border-color:var(--blue-light);">
+            <div class="pillar-num" style="color:var(--blue);">RULE</div>
+            <div class="pillar-title">Original footage only</div>
+            <div class="pillar-ex">Instagram now penalizes recycled and watermarked clips. Educational storytelling beats trend-chasing. Trial Reels test hooks on non-followers first.</div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm" style="font-size:1rem;">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. LAUNCH SEQUENCE -->
+    <div class="slide">
+      <div class="slide-inner dark compact">
+        <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(88,93,254,0.28) 0%,transparent 65%);bottom:-150px;right:-100px;"></div>
+        <div class="slide-eyebrow" style="background:rgba(191,239,242,0.2);color:var(--teal);">Launch Sequence</div>
+        <h2 class="slide-title">First two weeks.<br><span class="accent">Five scripts already written.</span></h2>
+        <div class="week-grid">
+          <div class="week-item">
+            <div class="week-day">Week 1 — Mon</div>
+            <div class="week-title">"Your Website Just Called You"</div>
+            <div class="week-desc">Flagship demo Reel. The magic moment at its purest. Shows the 60-second URL-to-call experience live on camera.</div>
+          </div>
+          <div class="week-item">
+            <div class="week-day">Week 1 — Wed</div>
+            <div class="week-title">"Drop Your Website"</div>
+            <div class="week-desc">Comment engine post. Audience drops URLs in comments, AI calls them live. Every URL is a warm lead and a future video.</div>
+          </div>
+          <div class="week-item">
+            <div class="week-day">Week 1 — Sat</div>
+            <div class="week-title">"The 6pm Experiment"</div>
+            <div class="week-desc">Calling 10 local businesses after hours to see who answers. Nobody does. Then one does. That's fonio.</div>
+          </div>
+          <div class="week-item">
+            <div class="week-day">Week 2 — Tue</div>
+            <div class="week-title">Worst-Case Website Test</div>
+            <div class="week-desc">Honest test: what happens when the website is terrible? Builds trust by showing limits and what the agent does with them.</div>
+          </div>
+          <div class="week-item">
+            <div class="week-day">Week 2 — Fri</div>
+            <div class="week-title">Business Owner First Reaction</div>
+            <div class="week-desc">A real owner hears their own AI agent for the first time. Unscripted reaction. Social proof in its most authentic form.</div>
+          </div>
+          <div class="week-item" style="background:rgba(88,93,254,0.15);border-color:rgba(88,93,254,0.3);border-left-color:var(--teal);">
+            <div class="week-day" style="color:var(--teal);">Week 2+ — Ongoing</div>
+            <div class="week-title" style="color:white;">Audience URL Series</div>
+            <div class="week-desc">Every comment submission becomes the next episode. Infinite content engine. Every participant is a warm lead.</div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. POSTING CADENCE -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-eyebrow">Posting Plan</div>
+        <h2 class="slide-title">4-5 posts per week.<br><span class="accent">Every post carries the same CTA.</span></h2>
+        <p class="slide-sub">All content routes to one signature call to action. The comment engine feeds future content. Every submitted URL is a warm lead and a future video.</p>
+        <div class="cadence-grid">
+          <div class="cadence-day highlight">
+            <div class="cadence-label">Mon</div>
+            <div class="cadence-type">Demo or Vertical Reel</div>
+          </div>
+          <div class="cadence-day">
+            <div class="cadence-label">Tue</div>
+            <div class="cadence-type" style="color:var(--gray);">Open / Rest</div>
+          </div>
+          <div class="cadence-day highlight">
+            <div class="cadence-label">Wed</div>
+            <div class="cadence-type">Carousel (Math or Education)</div>
+          </div>
+          <div class="cadence-day highlight">
+            <div class="cadence-label">Thu</div>
+            <div class="cadence-type">Story / Engagement Play</div>
+          </div>
+          <div class="cadence-day highlight">
+            <div class="cadence-label">Sat</div>
+            <div class="cadence-type">Entertainment or Social Proof</div>
+          </div>
+        </div>
+        <div class="two-col" style="margin-top:20px;">
+          <div class="card">
+            <div class="card-label">Algorithm priority</div>
+            <h3>Engineer for DM shares</h3>
+            <p>DM shares are weighted 3-5x over likes for Reels distribution. Every piece is designed to be forwarded: "dude, watch this, it's literally your business."</p>
+          </div>
+          <div class="card">
+            <div class="card-label">Format mix</div>
+            <h3>Reels for reach, Carousels for saves</h3>
+            <p>Carousels slightly outperform Reels on engagement. Small accounts under 5K average 3.8% engagement on niche content. Stay tight, stay focused.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm" style="font-size:1rem;">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. YARD SIGNS -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-eyebrow">Physical Channel</div>
+        <h2 class="slide-title">Yard signs:<br><span class="accent">the house talks to buyers.</span></h2>
+        <div class="two-col-wide" style="align-items:start;">
+          <div>
+            <p class="slide-sub" style="margin-bottom:16px;">Tap the NFC chip, scan the QR, or call the number printed on the sign. An AI agent answers immediately, already knowing the business or property. The owner gets an instant email and text with the caller, what they asked, and their contact info flowing into the CRM.</p>
+            <ul class="check-list" style="margin-top:0;">
+              <li>Flagship: real estate signs where buyers talk directly to an AI that knows the listing. Realtor never misses a showing inquiry.</li>
+              <li>NFC tap, QR scan, or printed number all work. Three surfaces, one experience.</li>
+              <li>QR links to town-specific landing page. Form flows into GHL with a town tag for clean attribution.</li>
+              <li>Low monthly price point that makes it an easy yes for any business or realtor.</li>
+            </ul>
+            <div class="highlight-box">
+              <div class="label">Current live market</div>
+              <div class="value">Liberty Hill, TX. Georgetown, Cedar Park, and Leander are next.</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="sign-visual">
+              <div class="sign-wm">fonio</div>
+              <div style="font-size:0.6rem;opacity:0.65;letter-spacing:0.1em;text-transform:uppercase;margin-top:2px;">AI Phone Agent</div>
+              <div class="sign-headline" style="margin-top:10px;">Never<br>Miss<br>A Call.</div>
+              <div class="sign-sub">Tap. Scan. Call. AI answers.</div>
+              <div style="background:white;border-radius:8px;width:72px;height:72px;margin-top:10px;display:flex;align-items:center;justify-content:center;">
+                <svg width="52" height="52" viewBox="0 0 100 100" fill="none"><rect x="10" y="10" width="30" height="30" rx="3" fill="#0f0f16"/><rect x="16" y="16" width="18" height="18" rx="2" fill="white"/><rect x="60" y="10" width="30" height="30" rx="3" fill="#0f0f16"/><rect x="66" y="16" width="18" height="18" rx="2" fill="white"/><rect x="10" y="60" width="30" height="30" rx="3" fill="#0f0f16"/><rect x="16" y="66" width="18" height="18" rx="2" fill="white"/><rect x="60" y="55" width="8" height="8" fill="#0f0f16"/><rect x="72" y="55" width="8" height="8" fill="#0f0f16"/><rect x="84" y="55" width="8" height="8" fill="#0f0f16"/><rect x="60" y="67" width="8" height="8" fill="#0f0f16"/><rect x="84" y="67" width="8" height="8" fill="#0f0f16"/><rect x="60" y="79" width="8" height="8" fill="#0f0f16"/><rect x="72" y="79" width="8" height="8" fill="#0f0f16"/><rect x="84" y="79" width="8" height="8" fill="#0f0f16"/></svg>
+              </div>
+            </div>
+            <div class="card" style="border-left:3px solid var(--teal-dark);">
+              <div class="card-label" style="color:var(--teal-dark);">Real Estate Flagship</div>
+              <h3>"Talk to the house"</h3>
+              <p>For-sale sign where the buyer calls an AI that knows the listing. Realtor gets instant CRM entry with caller ID, property, and what they asked. Never miss a showing inquiry.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm" style="font-size:1rem;">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12. GEOGRAPHIC ROLLOUT -->
+    <div class="slide">
+      <div class="slide-inner light">
+        <div class="slide-eyebrow">Rollout</div>
+        <h2 class="slide-title">Liberty Hill first.<br><span class="accent">Then the whole metro.</span></h2>
+        <p class="slide-sub">Each town gets a dedicated landing page, tagged GHL lead flow, custom QR code, and signs on the ground. Adding a new town is a 15-minute operation. The infrastructure is built.</p>
+        <div class="town-grid">
+          <div class="town-tag active">📍 Liberty Hill <span style="opacity:0.6;font-size:0.68rem;">LIVE</span></div>
+          <div class="town-tag">Georgetown</div>
+          <div class="town-tag">Cedar Park</div>
+          <div class="town-tag">Leander</div>
+          <div class="town-tag">Kyle</div>
+          <div class="town-tag">Buda</div>
+          <div class="town-tag">Pflugerville</div>
+          <div class="town-tag">Round Rock</div>
+        </div>
+        <div class="two-col" style="margin-top:24px;">
+          <div class="card">
+            <div class="card-label">Lead attribution</div>
+            <h3>Every lead tagged by town</h3>
+            <p>Hidden form field passes the town name to GHL on submit. Tags: fonio-lead and town-liberty-hill (or whatever market). Clean reporting from day one, every market separate.</p>
+          </div>
+          <div class="card">
+            <div class="card-label">The real estate play</div>
+            <h3>Realtors are the fast path</h3>
+            <p>One realtor team with 20 active listings is 20 signs placed, 20 QR codes live, and a natural referral machine. Real estate opens the door to every other vertical.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm" style="font-size:1rem;">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 13. LEAD FLOW -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-eyebrow">The Lead Flow</div>
+        <h2 class="slide-title">From QR scan or DM<br><span class="accent">to fonio trial in 2 minutes.</span></h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-num">1</div>
+            <div class="timeline-month">Awareness</div>
+            <ul class="timeline-tasks">
+              <li>Sees @phoneagents Reel or yard sign</li>
+              <li>Comments "DEMO" or scans QR</li>
+              <li>Lands on town-specific page or gets DM link</li>
+            </ul>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-num">2</div>
+            <div class="timeline-month">Capture</div>
+            <ul class="timeline-tasks">
+              <li>Fills out name, business, type, phone</li>
+              <li>Form POSTs to Vercel serverless function</li>
+              <li>Contact created in GHL with fonio-lead tag</li>
+            </ul>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-num">3</div>
+            <div class="timeline-month">Trial</div>
+            <ul class="timeline-tasks">
+              <li>Redirected to fonio setup page</li>
+              <li>Enters their website URL</li>
+              <li>60 seconds later, their phone rings</li>
+            </ul>
+          </div>
+        </div>
+        <div class="two-col" style="margin-top:24px;">
+          <div class="card">
+            <div class="card-label">Tech stack</div>
+            <h3>Vercel + GHL + fonio</h3>
+            <p>HTML pages on Vercel. Serverless API calls GHL directly. No Zapier, no middleware. Form to CRM under 200ms. Per-town attribution clean from the first lead.</p>
+          </div>
+          <div class="card">
+            <div class="card-label">The moment</div>
+            <h3>Their own website calls them</h3>
+            <p>The demo reads their actual URL. It sounds like their business. That's the "wait, that's me" moment that converts. People screen-record it and share it.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm" style="font-size:1rem;">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 14. GOALS AND MEASUREMENT -->
+    <div class="slide">
+      <div class="slide-inner blue">
+        <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(255,255,255,0.12) 0%,transparent 65%);top:-100px;right:-100px;"></div>
+        <div class="slide-eyebrow" style="background:rgba(191,239,242,0.25);color:var(--teal);">Goals and Measurement</div>
+        <h2 class="slide-title">Lead terms only.<br><span class="accent">Not vanity metrics.</span></h2>
+        <p class="slide-sub">Follower count is not a KPI. The only numbers that matter are leads captured, trials started, and customers converted.</p>
+        <div style="display:flex;gap:10px;margin-bottom:8px;">
+          <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;color:rgba(255,255,255,0.5);text-transform:uppercase;">Primary</span>
+        </div>
+        <div class="stat-grid" style="margin-bottom:16px;">
+          <div class="stat-card">
+            <div class="stat-number">Demo runs</div>
+            <div class="stat-label">Referral-tagged tool completions per week. Directly attributable, no estimation.</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">DM convos</div>
+            <div class="stat-label">Comment-to-DM conversations opened per post. Leading indicator of reach and intent.</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">Referrals</div>
+            <div class="stat-label">Leads submitted to fonio and their conversion rate to paid customers.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:8px;">
+          <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;color:rgba(255,255,255,0.4);text-transform:uppercase;">Secondary</span>
+        </div>
+        <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);">
+          <div class="stat-card" style="background:rgba(255,255,255,0.06);">
+            <div class="stat-number" style="font-size:1rem;">Follower growth</div>
+            <div class="stat-label">Watched, not managed. Growth follows good content.</div>
+          </div>
+          <div class="stat-card" style="background:rgba(255,255,255,0.06);">
+            <div class="stat-number" style="font-size:1rem;">DM shares / post</div>
+            <div class="stat-label">Algorithm signal. The metric that drives Reels distribution.</div>
+          </div>
+          <div class="stat-card" style="background:rgba(255,255,255,0.06);">
+            <div class="stat-number" style="font-size:1rem;">Carousel saves</div>
+            <div class="stat-label">Save-worthy math and education posts. Compounds over time.</div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 15. PARTNER ECONOMICS -->
+    <div class="slide">
+      <div class="slide-inner dark">
+        <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(88,93,254,0.3) 0%,transparent 65%);top:-150px;right:-100px;"></div>
+        <div class="slide-eyebrow" style="background:rgba(191,239,242,0.2);color:var(--teal);">Partner Economics</div>
+        <h2 class="slide-title">35% on every customer.<br><span class="accent">Stacks month over month.</span></h2>
+        <div class="two-col">
+          <div>
+            <div class="commission-row"><span class="commission-label">Partner tier</span><span class="commission-value">Bronze (active promo)</span></div>
+            <div class="commission-row"><span class="commission-label">Referral commission</span><span class="commission-value accent">35% recurring</span></div>
+            <div class="commission-row"><span class="commission-label">Structure</span><span class="commission-value">Monthly, stacks with every new customer</span></div>
+            <div class="commission-row"><span class="commission-label">Promo window</span><span class="commission-value">Through end of August 2026</span></div>
+            <div class="math-box" style="margin-top:20px;background:rgba(88,93,254,0.2);border-color:rgba(88,93,254,0.4);">
+              <div class="math-label" style="color:rgba(255,255,255,0.55);margin-bottom:6px;">10 customers at $200/mo avg</div>
+              <div class="math-result" style="color:var(--teal);">$700 / month recurring</div>
+              <div class="math-label" style="color:rgba(255,255,255,0.45);margin-top:3px;">at 35%. Grows each month as the customer base builds.</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="card">
+              <div class="card-label">Goal</div>
+              <h3>Most valuable US partner</h3>
+              <p>Direct relationship with Max and Johan (sales) and David (head of partnerships). Building toward reseller track and deeper integration support.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Upside</div>
+              <h3>The model is replicable</h3>
+              <p>Yard sign + local landing page works in any US market. Instagram is national from day one. Every new town is a 15-minute operation.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 16. 90-DAY ROADMAP -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-eyebrow">90-Day Roadmap</div>
+        <h2 class="slide-title">Month by month.<br><span class="accent">Channel by channel.</span></h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-num">1</div>
+            <div class="timeline-month">Month 1 — Foundation</div>
+            <ul class="timeline-tasks">
+              <li>Liberty Hill landing page live and converting</li>
+              <li>Yard signs deployed in Liberty Hill</li>
+              <li>@phoneagents launched, first 5 scripts published</li>
+              <li>GHL flow confirmed end-to-end</li>
+              <li>Comment DM automation live</li>
+              <li>First fonio customer closed</li>
+            </ul>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-num">2</div>
+            <div class="timeline-month">Month 2 — Expand</div>
+            <ul class="timeline-tasks">
+              <li>Georgetown + Cedar Park pages and signs live</li>
+              <li>First realtor signed on yard sign program</li>
+              <li>@phoneagents at consistent 4-5 post/week cadence</li>
+              <li>Audience URL series running ongoing</li>
+              <li>5 paying fonio customers</li>
+              <li>First MRR commission hits</li>
+            </ul>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-num">3</div>
+            <div class="timeline-month">Month 3 — Scale</div>
+            <ul class="timeline-tasks">
+              <li>5+ towns active with pages and signs</li>
+              <li>@phoneagents Reel breaks 10K views</li>
+              <li>20+ paying fonio customers</li>
+              <li>Recurring commission compounding</li>
+              <li>Partner tier review with fonio team</li>
+              <li>First city outside Austin tested</li>
+            </ul>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top:20px;">
+          <div class="label">North Star</div>
+          <div class="value">Become fonio's most valuable US referral partner before the August promo window closes.</div>
+        </div>
+        <div class="slide-footer">
+          <span class="fonio-wm" style="font-size:1rem;">fonio</span>
+          <span class="footer-brand">@phoneagents Growth Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 17. NEXT STEPS -->
+    <div class="slide">
+      <div class="slide-inner dark" style="justify-content:space-between;">
+        <div class="orb" style="width:600px;height:600px;background:radial-gradient(circle,rgba(88,93,254,0.35) 0%,transparent 65%);top:-150px;right:-150px;"></div>
+        <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(191,239,242,0.18) 0%,transparent 70%);bottom:-100px;left:-100px;"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="fonio-wm">fonio</span>
+          <span class="partner-badge">Referral Partner</span>
+        </div>
+        <div>
+          <h2 class="slide-title" style="font-size:2.8rem;">Two channels.<br>One magic moment.<br><span class="accent">Let's build.</span></h2>
+          <ul class="check-list" style="margin-top:24px;">
+            <li style="color:rgba(255,255,255,0.85);">Content engine built. 43 ideas banked across 7 pillars. 5 scripts production-ready.</li>
+            <li style="color:rgba(255,255,255,0.85);">Demo tool live. Referral-tagged, self-serve, attribution automatic.</li>
+            <li style="color:rgba(255,255,255,0.85);">Yard sign pilot ready to deploy. QR + NFC + demo phone number. Real estate flagship ready.</li>
+            <li style="color:rgba(255,255,255,0.85);">Mark is positioned to be fonio's highest-signal US referral partner.</li>
+          </ul>
+        </div>
+        <div class="cover-prepared">Prepared by Mark Garza, Laimen AI &nbsp;·&nbsp; fonio.ai Referral Partner &nbsp;·&nbsp; phoneagent@laimen.ai</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const progress = document.getElementById('progress');
+  const counter = document.getElementById('counter');
+  const total = slides.length;
+  let current = 0;
+
+  function goTo(index) {
+    if (index < 0 || index >= total) return;
+    slides[current].classList.remove('active');
+    slides[current].classList.add('exit');
+    const prev = current;
+    setTimeout(() => slides[prev].classList.remove('exit'), 400);
+    current = index;
+    slides[current].classList.add('active');
+    progress.style.width = ((current + 1) / total * 100) + '%';
+    counter.textContent = (current + 1) + ' / ' + total;
+  }
+
+  document.getElementById('next').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(current - 1);
+  });
+
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) diff > 0 ? goTo(current + 1) : goTo(current - 1);
+  });
+
+  counter.textContent = '1 / ' + total;
+  progress.style.width = (1 / total * 100) + '%';
+</script>
+</body>
+</html>

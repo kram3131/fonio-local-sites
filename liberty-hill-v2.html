@@ -320,26 +320,27 @@
       <h1>We'll build your<br><span class="accent">AI phone agent</span><br>for free.</h1>
 
       <p class="subtext">
-        Fill out the form and enter your website URL. Fonio instantly builds a free AI phone demo from your site. Hear exactly what your customers will hear — no wait, no commitment.
+        Fill out the form below. We build a free AI phone agent from your website and call you directly — no extra steps, no fonio account needed.
       </p>
 
       <div class="steps-strip">
         <div class="step-item">
           <div class="step-num">1</div>
-          <div class="step-text">Enter your info</div>
+          <div class="step-text">Fill out this form</div>
         </div>
         <div class="step-item">
           <div class="step-num">2</div>
-          <div class="step-text">Add your website URL</div>
+          <div class="step-text">We build your agent</div>
         </div>
         <div class="step-item">
           <div class="step-num">3</div>
-          <div class="step-text">Hear your demo now</div>
+          <div class="step-text">Your phone rings</div>
         </div>
       </div>
 
       <div id="success-msg" style="display:none; text-align:center; padding:24px; background:#d1f4c7; border-radius:8px; margin-bottom:16px;">
-        <strong>You're in!</strong> Loading your live demo now...
+        <strong style="font-size:1.05rem;">Your demo agent is calling you now.</strong>
+        <p style="margin-top:8px; font-size:0.88rem; color:#374151; line-height:1.5;">Pick up — it's a live AI agent built for your business. This is exactly what your customers will hear.</p>
       </div>
 
       <form id="lead-form">
@@ -371,6 +372,11 @@
         </div>
 
         <div class="form-group">
+          <label for="website">Your business website</label>
+          <input type="url" id="website" name="website" placeholder="https://smithplumbing.com" required />
+        </div>
+
+        <div class="form-group">
           <label for="phone">Best phone number to call you on</label>
           <input type="tel" id="phone" name="phone" placeholder="(512) 555-0100" required />
         </div>
@@ -389,6 +395,7 @@
             name: document.getElementById('name').value,
             business: document.getElementById('business').value,
             type: document.getElementById('type').value,
+            website: document.getElementById('website').value,
             phone: document.getElementById('phone').value,
             town: 'Liberty Hill',
           };
@@ -402,21 +409,6 @@
             if (res.ok) {
               document.getElementById('lead-form').style.display = 'none';
               document.getElementById('success-msg').style.display = 'block';
-              setTimeout(() => {
-                const nameParts = data.name.trim().split(/\s+/);
-                const firstName = nameParts[0] || '';
-                const lastName = nameParts.slice(1).join(' ') || '';
-                const params = new URLSearchParams({
-                  isTrial: 'true',
-                  ac: '5K3KRA816N',
-                  language: 'en-US',
-                  firstName,
-                  lastName,
-                  company: data.business,
-                  phone: data.phone,
-                });
-                window.location.href = 'https://app.fonio.ai/demo/setup?' + params.toString();
-              }, 1500);
             } else {
               btn.textContent = 'Something went wrong — try again';
               btn.disabled = false;
