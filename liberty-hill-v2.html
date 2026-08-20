@@ -338,9 +338,16 @@
         </div>
       </div>
 
+      <div id="building-msg" style="display:none; text-align:center; padding:24px; background:#f0f0ff; border-radius:8px; margin-bottom:16px;">
+        <strong style="font-size:1.05rem;">Building your agent from your website...</strong>
+        <p style="margin-top:8px; font-size:0.88rem; color:#374151; line-height:1.5;">This takes about 20–30 seconds. Your phone will ring the moment it's ready.</p>
+        <div style="margin-top:16px; height:4px; background:#e5e7eb; border-radius:99px; overflow:hidden;">
+          <div id="progress-bar" style="height:100%; width:0%; background:var(--blue); border-radius:99px; transition:width 0.5s ease;"></div>
+        </div>
+      </div>
       <div id="success-msg" style="display:none; text-align:center; padding:24px; background:#d1f4c7; border-radius:8px; margin-bottom:16px;">
         <strong style="font-size:1.05rem;">Your demo agent is calling you now.</strong>
-        <p style="margin-top:8px; font-size:0.88rem; color:#374151; line-height:1.5;">Pick up — it's a live AI agent built for your business. This is exactly what your customers will hear.</p>
+        <p style="margin-top:8px; font-size:0.88rem; color:#374151; line-height:1.5;">Pick up — it's a live AI agent built from your website. This is exactly what your customers will hear.</p>
       </div>
 
       <form id="lead-form">
@@ -388,7 +395,7 @@
         document.getElementById('lead-form').addEventListener('submit', async function(e) {
           e.preventDefault();
           const btn = document.getElementById('submit-btn');
-          btn.textContent = 'Submitting...';
+          btn.textContent = 'Building your agent...';
           btn.disabled = true;
 
           let website = document.getElementById('website').value.trim();
@@ -409,12 +416,58 @@
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(data),
             });
-            if (res.ok) {
-              document.getElementById('lead-form').style.display = 'none';
-              document.getElementById('success-msg').style.display = 'block';
-            } else {
+            const result = await res.json();
+
+            if (!res.ok) {
               btn.textContent = 'Something went wrong — try again';
               btn.disabled = false;
+              return;
+            }
+
+            document.getElementById('lead-form').style.display = 'none';
+
+            // If we got an agentId, poll until built then trigger call
+            if (result.agentId) {
+              document.getElementById('building-msg').style.display = 'block';
+              const bar = document.getElementById('progress-bar');
+              let pct = 5;
+              const tick = setInterval(() => {
+                pct = Math.min(pct + 2, 90);
+                bar.style.width = pct + '%';
+              }, 600);
+
+              let attempts = 0;
+              const poll = setInterval(async () => {
+                attempts++;
+                try {
+                  const s = await fetch('/api/agent-demo-status?id=' + result.agentId);
+                  const status = await s.json();
+                  const ready = status.imageUrl != null && status.failedReason == null;
+                  const failed = status.failedReason != null;
+
+                  if (ready || failed || attempts > 20) {
+                    clearInterval(poll);
+                    clearInterval(tick);
+                    bar.style.width = '100%';
+
+                    if (ready) {
+                      await fetch('/api/agent-demo-call', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ agentId: result.agentId, phone: result.phone, name: result.name }),
+                      });
+                    }
+
+                    setTimeout(() => {
+                      document.getElementById('building-msg').style.display = 'none';
+                      document.getElementById('success-msg').style.display = 'block';
+                    }, 500);
+                  }
+                } catch {}
+              }, 2000);
+            } else {
+              // Fallback generic call already triggered server-side
+              document.getElementById('success-msg').style.display = 'block';
             }
           } catch {
             btn.textContent = 'Something went wrong — try again';
