@@ -36,9 +36,12 @@ export default async function handler(req, res) {
     });
 
     if (!ghlRes.ok) {
-      const err = await ghlRes.text();
-      console.error('GHL error:', err);
-      return res.status(500).json({ error: 'Failed to create contact' });
+      const errText = await ghlRes.text();
+      console.error('GHL error:', errText);
+      // Duplicate contact is fine -- lead already exists, still trigger the call
+      if (!errText.includes('duplicated')) {
+        return res.status(500).json({ error: 'Failed to create contact' });
+      }
     }
 
     // Trigger fonio demo call directly -- no redirect needed
