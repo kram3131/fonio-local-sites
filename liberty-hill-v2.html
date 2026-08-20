@@ -456,6 +456,13 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ agentId: result.agentId, phone: result.phone, name: result.name }),
                       });
+                    } else {
+                      // Agent build failed -- fall back to generic call
+                      await fetch('/api/agent-demo-call-fallback', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone: result.phone }),
+                      }).catch(() => {});
                     }
 
                     setTimeout(() => {
