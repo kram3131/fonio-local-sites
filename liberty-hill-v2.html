@@ -403,7 +403,19 @@
               document.getElementById('lead-form').style.display = 'none';
               document.getElementById('success-msg').style.display = 'block';
               setTimeout(() => {
-                window.location.href = 'https://app.fonio.ai/demo/setup?isTrial=true&ac=5K3KRA816N&language=en-US';
+                const nameParts = data.name.trim().split(/\s+/);
+                const firstName = nameParts[0] || '';
+                const lastName = nameParts.slice(1).join(' ') || '';
+                const params = new URLSearchParams({
+                  isTrial: 'true',
+                  ac: '5K3KRA816N',
+                  language: 'en-US',
+                  firstName,
+                  lastName,
+                  company: data.business,
+                  phone: data.phone,
+                });
+                window.location.href = 'https://app.fonio.ai/demo/setup?' + params.toString();
               }, 1500);
             } else {
               btn.textContent = 'Something went wrong — try again';
