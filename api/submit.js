@@ -9,6 +9,10 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Name and phone are required' });
   }
 
+  // Normalize to E.164 -- strip everything except digits, prepend +1 for US numbers
+  const digits = phone.replace(/\D/g, '');
+  const e164 = digits.startsWith('1') ? `+${digits}` : `+1${digits}`;
+
   try {
     const ghlRes = await fetch('https://services.leadconnectorhq.com/contacts/', {
       method: 'POST',
@@ -21,7 +25,7 @@ export default async function handler(req, res) {
         locationId: process.env.GHL_LOCATION_ID,
         firstName: name.split(' ')[0],
         lastName: name.split(' ').slice(1).join(' ') || '',
-        phone,
+        phone: e164,
         companyName: business || '',
         tags: ['fonio-lead', `town-${(town || 'unknown').toLowerCase().replace(/\s+/g, '-')}`],
         customFields: [
@@ -46,7 +50,7 @@ export default async function handler(req, res) {
           'Origin': 'https://app.fonio.ai',
           'Referer': 'https://app.fonio.ai/demo/setup?isTrial=true&ac=5K3KRA816N',
         },
-        body: JSON.stringify({ toNumber: phone, locale: 'en-US' }),
+        body: JSON.stringify({ toNumber: e164, locale: 'en-US' }),
       });
     } catch (fonioErr) {
       console.error('Fonio call error (non-fatal):', fonioErr);
