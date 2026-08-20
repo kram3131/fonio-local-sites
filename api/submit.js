@@ -27,7 +27,6 @@ export default async function handler(req, res) {
         customFields: [
           { key: 'business_type', field_value: type || '' },
           { key: 'lead_source', field_value: `Fonio Local Site - ${town || ''}` },
-          { key: 'website', field_value: website || '' },
         ],
       }),
     });
